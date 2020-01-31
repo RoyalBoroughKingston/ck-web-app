@@ -36,6 +36,8 @@ import FeedbackModal from './components/FeedbackModal';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 
 import { withTracker } from './utils/withTracker';
+import { detectBrowser } from './utils/browserDetector';
+import { UnsupportedBrowser } from './components/UnsupportedBrowser/UnsupportedBrowser';
 
 // add all free font awesome icons to project
 library.add(fas, fab);
@@ -56,6 +58,7 @@ class App extends Component {
   }
 
   render() {
+    const supportedBrowser = detectBrowser();
     return (
       <Provider
         windowSizeStore={windowSizeStore}
@@ -68,6 +71,7 @@ class App extends Component {
       >
         <Router>
           <ScrollToTop>
+            {!supportedBrowser && <UnsupportedBrowser />}
             <Header />
             <Switch>
               <Route path="/" exact={true} component={withTracker(Home)} />
