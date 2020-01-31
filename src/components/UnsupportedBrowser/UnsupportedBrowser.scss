@@ -1,0 +1,10 @@
+@import '../../styles/fonts.scss';
+@import '../../styles/colors.scss';
+
+.unsupported {
+    @include body-s;
+    text-align: center;
+    background-color: $alabaster;
+    color: $san-juan;
+    padding: space(8) 0;
+} 
