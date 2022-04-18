@@ -41,6 +41,11 @@
     "react-svg": "^14.1.18",
     "typescript": "^3.6.2"
   },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
