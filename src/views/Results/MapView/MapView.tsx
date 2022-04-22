@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import find from 'lodash/find';
 import map from 'lodash/map';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -75,7 +75,7 @@ class MapView extends Component<IProps, IState> {
     return (
       <main className="flex-container">
         <div className="flex-col--9 flex-col--mobile--12 map">
-          <Map cente={CENTRE_OF_KINGSTON} attributionControl={false} bounds={this.state.bounds}>
+          <MapContainer center={CENTRE_OF_KINGSTON} attributionControl={false} bounds={this.state.bounds}>
             <TileLayer url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png" />
             {resultsStore.results.map((result: IService) => {
               const organisation =
@@ -102,7 +102,7 @@ class MapView extends Component<IProps, IState> {
 
               return null;
             })}
-          </Map>
+          </MapContainer>
         </div>
         <div className="flex-col--3 flex-col--mobile--12 map__key--container">
           <h3 className="map__key--heading">Map key</h3>

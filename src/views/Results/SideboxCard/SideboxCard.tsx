@@ -16,7 +16,7 @@ const SideboxCard: React.FunctionComponent<IProps> = ({ sidebox }) => (
         <h3>{sidebox.title}</h3>
       </div>
       <div className="flex-col--12">
-        <ReactMarkdown source={sidebox.content} />
+        <ReactMarkdown children={sidebox.content} />
       </div>
     </div>
   </div>
