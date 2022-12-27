@@ -6,20 +6,43 @@
 .personas {
   color: $san-juan;
   position: relative;
+  display: flex;
+  justify-content: center;
   padding: space(32) space(16);
 
-  &--intro {
-    @include for-tablet-portrait-up {
-      text-align: center;
+  &__inner-container {
+    background-color: $iceberg;
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    max-width: 1260px;
+    position: relative;
+  
+    @include for-tablet-landscape-up {
+      padding: space(40) space(32) space(32);
+      margin: space(48) space(32) space(96);
+    }
+
+    &:before {
+      @include for-tablet-landscape-up {
+        content: url('../../assets/images/trees/iceberg-small.svg');
+        position: absolute;
+        top: -118px;
+        left: 10%;
+    
+      }
+      @include for-big-desktop-up {
+        top: -136px;
+  
+      }
     }
   }
 
-  .flex-container {
-    max-width: 1260px;
-  }
-
-  p {
-    margin-top: space(10);
+  &--intro {
+    margin-bottom: space(48);
+    p {
+      font-size: pxtorem(22px);
+    }
   }
 
   @include for-phone-only {
@@ -86,25 +109,20 @@
 
 .personas__list {
   position: relative;
-  padding: 0 0 space(32) !important;
+  display: grid;
+  // padding: 0 0 space(32) !important;
 
   @include for-phone-only {
     margin-top: space(32);
   }
 
   @include for-tablet-portrait-up {
-    padding-top: space(24) !important;
+    // padding-top: space(24) !important;
   }
 
   @include for-tablet-landscape-up {
-    padding-top: 0 !important;
-
-    &:before {
-      content: url('../../assets/images/trees/iceberg-small.svg');
-      position: absolute;
-      top: -150px;
-      left: 10%;
-    }
+    grid-template-columns: repeat(3, 1fr);
+    // padding-top: 0 !important;
   }
 }
 

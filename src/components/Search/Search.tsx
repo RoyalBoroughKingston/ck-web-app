@@ -45,30 +45,29 @@ class Search extends React.Component<IProps> {
       text: name,
     }));
 
+    console.log('SearchStore.categories', SearchStore.categories);
+
     return (
       <Fragment>
         <section className="flex-container flex-container--justify search__container">
           {cmsStore.hasBanner && cmsStore.banner && <Banner banner={cmsStore.banner} />}
           <form className="flex--col--12 search__inner-container">
-            <div className="flex-container flex-container--mobile-no-padding">
+            <div className="flex-container flex-container--mobile-no-padding flex-container--no-padding">
               <div
-                className={cx('flex-col--12 search__input flex-col--mobile--12', {
+                className={cx('flex-col--12 search__input flex-col--mobile--12 ', {
                   'flex-col--mobile--12': isMobile,
                 })}
               >
-                <div className="flex-container flex-container--align-center flex-container--mobile-no-padding search__input--row">
-                  <div className="flex-col--12">
-                    <label htmlFor="search">
-                      <h1 className="search__heading">{get(cmsStore, 'home.search_title')}</h1>
-                    </label>
-                  </div>
+                <div className="search__input--row">
+                  <label htmlFor="search">
+                    <h1 className="search__heading">{get(cmsStore, 'home.search_title')}</h1>
+                  </label>
                   <div
                     className="flex-container flex-container--align-center flex-container--mobile-no-padding"
                     style={{
                       width: '100%',
                       padding: 0,
                       justifyContent: 'start',
-                      marginBottom: 24,
                     }}
                   >
                     <div
@@ -117,8 +116,12 @@ class Search extends React.Component<IProps> {
                       </p>
                     </div>
                     {!isMobile && (
-                      <div className="search__cateogry-list" style={{ marginBottom: 24 }}>
-                        <CategoryList categories={SearchStore.covidCategories} covid={true} />
+                      <div className="search__cateogry-list" style={{ marginBottom: 40 }}>
+                        <CategoryList
+                          showCollectionImage={false}
+                          categories={SearchStore.covidCategories}
+                          covid={true}
+                        />
                       </div>
                     )}
 
@@ -175,8 +178,8 @@ class Search extends React.Component<IProps> {
                   </Fragment>
                 )}
                 {!isMobile && (
-                  <div className="search__cateogry-list">
-                    <CategoryList categories={SearchStore.categories} />
+                  <div className="search__cateogry-list search__cateogry-list__grid">
+                    <CategoryList showCollectionImage categories={SearchStore.categories} />
                   </div>
                 )}
               </div>
