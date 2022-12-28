@@ -27,11 +27,13 @@ const CategoryList: React.FunctionComponent<IProps> = ({
     {categories.map(({ name, id, icon, image_file_id }) =>
       showCollectionImage ? (
         <Link to={`/results?category=${id}`} className="search__cateogry-list__link-with-image">
-          <img
-            className="search__cateogry-list__image"
-            src={`${apiBase}/collections/categories/${id}/image.svg?v=`}
-            alt={name}
-          />
+          {image_file_id && (
+            <img
+              className="search__cateogry-list__image"
+              src={`${apiBase}/collections/categories/${id}/image.svg?v=`}
+              alt={name}
+            />
+          )}
           {name}
         </Link>
       ) : (

@@ -8,7 +8,11 @@
   position: relative;
   display: flex;
   justify-content: center;
-  padding: space(32) space(16);
+  padding-bottom: space(32);
+
+  @include for-tablet-landscape-up {
+    padding-top: space(32);
+  }
 
   &__inner-container {
     background-color: $iceberg;
@@ -18,9 +22,14 @@
     max-width: 1260px;
     position: relative;
   
+    @include for-tablet-portrait-up {
+      
+      padding: space(44) space(32) space(44);
+      margin: space(48) space(32) 0;
+    }
+
     @include for-tablet-landscape-up {
-      padding: space(40) space(32) space(32);
-      margin: space(48) space(32) space(96);
+      padding: space(56) space(48) space(64);
     }
 
     &:before {
@@ -39,7 +48,12 @@
   }
 
   &--intro {
-    margin-bottom: space(48);
+    margin-bottom: space(32);
+
+    @include for-tablet-portrait-up {
+      margin-bottom: space(56);
+    }
+    
     p {
       font-size: pxtorem(22px);
     }
@@ -47,7 +61,7 @@
 
   @include for-phone-only {
     background-color: $iceberg;
-    padding: space(56) space(32) space(56);
+    padding: space(56) space(24) space(56);
     text-align: left;
 
     p {
@@ -110,19 +124,18 @@
 .personas__list {
   position: relative;
   display: grid;
-  // padding: 0 0 space(32) !important;
+  gap: space(24);
 
   @include for-phone-only {
     margin-top: space(32);
   }
 
-  @include for-tablet-portrait-up {
-    // padding-top: space(24) !important;
-  }
-
   @include for-tablet-landscape-up {
+    gap: 2rem;
     grid-template-columns: repeat(3, 1fr);
-    // padding-top: 0 !important;
+  }
+  @include for-desktop-up {
+    gap: 3rem;
   }
 }
 

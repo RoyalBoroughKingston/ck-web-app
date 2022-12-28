@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const PersonasCard: React.FunctionComponent<IProps> = ({ persona, action, windowSizeStore }) => (
-  <section className="card" onClick={action} role="navigation" tabIndex={0}>
+  <article className="card" onClick={action} role="navigation" tabIndex={0}>
     <img
       src={`${apiBase}/collections/personas/${persona.id}/image.png?max_dimension=300`}
       alt={`Services relating to ${persona.name}`}
@@ -21,8 +21,10 @@ const PersonasCard: React.FunctionComponent<IProps> = ({ persona, action, window
     <div className=" card__description">
       <h3 className="card__header">{persona.name}</h3>
       <p className="mobile-hide">{persona.intro}</p>
+
+      <span className="card__link">Explore &gt;</span>
     </div>
-  </section>
+  </article>
 );
 
 export default inject('windowSizeStore')(observer(PersonasCard));

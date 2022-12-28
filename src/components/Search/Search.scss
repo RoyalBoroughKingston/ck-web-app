@@ -61,8 +61,12 @@
     position: relative;
   
     @include for-tablet-landscape-up {
-      padding: space(40) space(32) space(32);
-      margin: space(48) space(32) space(96);
+      padding: space(56) space(48);
+      margin: space(48) 0 9rem;
+    }
+
+    @include for-big-desktop-up {
+      margin-bottom: 11rem;
     }
   }
 
@@ -90,7 +94,11 @@
     &--row {
       padding: 0 !important;
       justify-content: flex-start !important;
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
+
+      @include for-tablet-portrait-up {
+        margin-bottom: 3rem;
+      }
     }
   }
 
