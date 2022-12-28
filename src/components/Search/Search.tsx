@@ -4,7 +4,6 @@ import map from 'lodash/map';
 import { withRouter, RouteComponentProps } from 'react-router';
 import cx from 'classnames';
 import get from 'lodash/get';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import SearchStore from './store';
 
@@ -40,12 +39,6 @@ class Search extends React.Component<IProps> {
 
     const { isMobile } = windowSizeStore;
     const options = map(SearchStore.categories, ({ name, id }) => ({ value: id, text: name }));
-    const covidOptions = map(SearchStore.covidCategories, ({ name, id }) => ({
-      value: id,
-      text: name,
-    }));
-
-    console.log('SearchStore.categories', SearchStore.categories);
 
     return (
       <Fragment>
@@ -104,43 +97,6 @@ class Search extends React.Component<IProps> {
                 </div>
               </div>
               <div className="flex-col--12">
-                {!!SearchStore.covidCategories.length && (
-                  <Fragment>
-                    <label className="search__heading" htmlFor="category">
-                      COVID-19 <FontAwesomeIcon icon="virus" />
-                    </label>
-                    <div className="flex-col--6 flex-col--mobile--12">
-                      <p className="search__category-subtitle">
-                        Find up to date information and support in Kingston to help you take care of
-                        yourself and your community.
-                      </p>
-                    </div>
-                    {!isMobile && (
-                      <div className="search__cateogry-list" style={{ marginBottom: 40 }}>
-                        <CategoryList
-                          showCollectionImage={false}
-                          categories={SearchStore.covidCategories}
-                          covid={true}
-                        />
-                      </div>
-                    )}
-
-                    {isMobile && (
-                      <Fragment>
-                        <Select
-                          options={covidOptions}
-                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                            SearchStore.setCategory(e)
-                          }
-                          className="search__category--mobile"
-                          placeholder="Category List"
-                          id="category"
-                        />
-                      </Fragment>
-                    )}
-                  </Fragment>
-                )}
-
                 <label className="search__heading" htmlFor="category">
                   {get(cmsStore, 'home.categories_title')}
                 </label>

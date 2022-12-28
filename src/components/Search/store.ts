@@ -41,7 +41,6 @@ class SearchStore {
       // sanitize category names by removing keyword for sorting
       covidCategories.forEach(category => (category.name = category.name.replace('COVID-19:', '')));
 
-      console.log('normalCategories:', normalCategories);
       this.categories = normalCategories;
       this.covidCategories = covidCategories;
     } catch (e) {

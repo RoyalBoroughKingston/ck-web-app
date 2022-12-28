@@ -26,7 +26,11 @@ const CategoryList: React.FunctionComponent<IProps> = ({
   <Fragment>
     {categories.map(({ name, id, icon, image_file_id }) =>
       showCollectionImage ? (
-        <Link to={`/results?category=${id}`} className="search__cateogry-list__link-with-image">
+        <Link
+          key={id}
+          to={`/results?category=${id}`}
+          className="search__cateogry-list__link-with-image"
+        >
           {image_file_id && (
             <img
               className="search__cateogry-list__image"
