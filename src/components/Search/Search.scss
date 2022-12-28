@@ -47,7 +47,7 @@
     }
   
     @include for-phone-only {
-      padding: space(40) space(24) space(80) !important;
+      padding: space(48) space(24) space(80) !important;
       background-color: $iceberg;
     }
   }
@@ -77,14 +77,25 @@
   
     button {
       margin: 0 space(20);
+
+      @include for-tablet-landscape-up {
+        font-size: pxtorem(24px);
+
+        .button__icon {
+          max-width: pxtorem(24px);
+        }
+      }
     }
   
     input {
       width: 100%;
-      font-size: pxtorem(22px);
       font-family: $font-secondary;
       padding: 0.9rem 1rem;
       height: auto;
+
+      @include for-tablet-portrait-up {
+        font-size: pxtorem(22px);
+      }
 
       &::placeholder {
         color: $gray-light;
