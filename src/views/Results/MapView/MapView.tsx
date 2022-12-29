@@ -25,6 +25,7 @@ interface IState {
 const CENTRE_OF_KINGSTON: [number, number] = [51.378583, -0.280582];
 const TOP_LEFT_CORNER: [number, number] = [51.412437, -0.329297];
 const BOTTOM_RIGHT_CORNER: [number, number] = [51.403871, -0.288459];
+// TODO: make into a reusable component
 
 class MapView extends Component<IProps, IState> {
   constructor(props: IProps) {
