@@ -6,23 +6,12 @@ import axios from 'axios';
 import queryString from 'query-string';
 
 import { apiBase } from '../config/api';
-import {
-  IParams,
-  ICategory,
-  IPersona,
-  IOrganisation,
-  IService,
-  IGeoLocation,
-} from '../types/types';
+import { IParams, IOrganisation, IService, IGeoLocation } from '../types/types';
 
 import { queryRegex, querySeparator } from '../utils/utils';
 
 export default class ResultsStore {
   @observable keyword: string = '';
-  @observable categoryId: string = '';
-  @observable category: ICategory | null = null;
-  @observable personaId: string = '';
-  @observable persona: IPersona | null = null;
   @observable organisations: IOrganisation[] | null = [];
   @observable is_free: boolean = false;
   @observable wait_time: string = 'null';
@@ -44,10 +33,6 @@ export default class ResultsStore {
   @action
   clear() {
     this.keyword = '';
-    this.categoryId = '';
-    this.category = null;
-    this.personaId = '';
-    this.persona = null;
     this.is_free = false;
     this.wait_time = 'null';
     this.order = 'relevance';
@@ -62,26 +47,6 @@ export default class ResultsStore {
     this.view = 'grid';
   }
 
-  @action
-  getCategory = async () => {
-    try {
-      const category = await axios.get(`${apiBase}/collections/categories/${this.categoryId}`);
-      this.category = get(category, 'data.data', '');
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  @action
-  getPersona = async () => {
-    try {
-      const persona = await axios.get(`${apiBase}/collections/personas/${this.personaId}`);
-      this.persona = get(persona, 'data.data', '');
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   getSearchTerms = () => {
     const searchTerms = queryString.parse(window.location.search);
 
@@ -91,14 +56,6 @@ export default class ResultsStore {
   @action
   setSearchTerms = async (searchTerms: { [key: string]: any }) => {
     forEach(searchTerms, (key, value) => {
-      if (value === 'category') {
-        this.categoryId = key;
-      }
-
-      if (value === 'persona') {
-        this.personaId = key;
-      }
-
       if (value === 'search_term') {
         this.keyword = key;
       }
@@ -120,14 +77,6 @@ export default class ResultsStore {
       }
     });
 
-    if (this.categoryId) {
-      await this.getCategory();
-    }
-
-    if (this.personaId) {
-      await this.getPersona();
-    }
-
     if (this.postcode) {
       await this.geolocate();
     }
@@ -137,14 +86,6 @@ export default class ResultsStore {
 
   setParams = async () => {
     const params: IParams = {};
-
-    if (this.category) {
-      params.category = get(this.category, 'name');
-    }
-
-    if (this.persona) {
-      params.persona = get(this.persona, 'name');
-    }
 
     if (this.is_free) {
       params.is_free = this.is_free;

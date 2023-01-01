@@ -6,23 +6,13 @@ import axios from 'axios';
 import queryString from 'query-string';
 
 import { apiBase } from '../config/api';
-import {
-  IParams,
-  ICategory,
-  IPersona,
-  IOrganisation,
-  IService,
-  IGeoLocation,
-} from '../types/types';
+import { IParams, ICategory, IOrganisation, IService, IGeoLocation } from '../types/types';
 
 import { queryRegex, querySeparator, titleCase } from '../utils/utils';
 
 export default class CollectionStore {
-  @observable categoryId: string = '';
   @observable categorySlug: string = '';
   @observable category: ICategory | null = null;
-  @observable personaId: string = '';
-  @observable persona: IPersona | null = null;
   @observable organisations: IOrganisation[] | null = [];
   @observable is_free: boolean = false;
   @observable wait_time: string = 'null';
@@ -39,10 +29,7 @@ export default class CollectionStore {
   @action
   clear() {
     this.categorySlug = '';
-    this.categoryId = '';
     this.category = null;
-    this.personaId = '';
-    this.persona = null;
     this.is_free = false;
     this.wait_time = 'null';
     this.order = 'relevance';
@@ -85,6 +72,7 @@ export default class CollectionStore {
 
   @action
   setSearchTerms = async (searchTerms: { [key: string]: any }) => {
+    console.log('collectionStore --> setSearchTerms');
     forEach(searchTerms, (key, value) => {
       if (value === 'is_free') {
         this.is_free = key === 'true' ? true : false;

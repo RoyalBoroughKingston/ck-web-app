@@ -14,8 +14,6 @@ interface IProps {
 const CategoryFilter: React.FC<IProps> = ({ store }) => {
   const history = useHistory();
 
-  console.log('[CategoryFilter] -->', store);
-
   if (!store || !history) {
     return null;
   }

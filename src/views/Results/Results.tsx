@@ -1,26 +1,19 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { History } from 'history';
 import cx from 'classnames';
-import get from 'lodash/get';
 
 import './Results.scss';
 import ResultStore from '../../stores/resultsStore';
-import Category from './Filters/Category';
 import Keyword from './Filters/Keyword';
 import ViewFilters from './Filters/ViewFilter/ViewFilter';
-import ListView from './ListView';
-import MapView from './MapView';
+import ResultsListView from '../../components/ResultsListView';
+import ResultsMapView from '../../components/ResultsMapView';
 import Select from '../../components/Select';
 import Breadcrumb from '../../components/Breadcrumb';
-import map from 'lodash/map';
-import SideboxCard from './SideboxCard';
-import { ISidebox } from '../../types/types';
 
 interface IProps {
   location: Location;
   resultsStore: ResultStore;
-  history: History;
 }
 
 class Results extends Component<IProps> {
@@ -29,20 +22,6 @@ class Results extends Component<IProps> {
 
     resultsStore.getSearchTerms();
   }
-
-  hasCategories = () => {
-    const { resultsStore } = this.props;
-
-    if (resultsStore.category) {
-      return get(resultsStore, 'category.sideboxes', []);
-    }
-
-    if (resultsStore.persona) {
-      return get(resultsStore, 'persona.sideboxes', []);
-    }
-
-    return null;
-  };
 
   componentDidUpdate(prevProps: IProps) {
     if (prevProps.location.search !== this.props.location.search) {
@@ -58,22 +37,21 @@ class Results extends Component<IProps> {
   }
 
   render() {
-    const { resultsStore, history } = this.props;
+    const { resultsStore } = this.props;
+
     return (
       <section>
-        <Breadcrumb crumbs={[{ text: 'Home', url: '/' }, { text: 'Search', url: '' }]} />
+        <Breadcrumb
+          crumbs={[
+            { text: 'Home', url: '/' },
+            { text: 'Search', url: '' },
+          ]}
+        />
         <div className="results__search-box">
-          {resultsStore.isKeywordSearch ? <Keyword /> : <Category />}
+          <Keyword />
         </div>
 
         <div className="results__list">
-          {this.hasCategories() && (
-            <div className="flex-container flex-container--mobile-no-padding results__category-sidebar">
-              {map(this.hasCategories(), (sidebox: ISidebox) => {
-                return <SideboxCard sidebox={sidebox} />;
-              })}
-            </div>
-          )}
           <div className="flex-container flex-container results__filter-bar">
             <div className="flex-col flex-col--4 flex-col--tablet--12 flex-col--mobile--12 results__container-count">
               {!!resultsStore.results.length && !resultsStore.loading && (
@@ -130,9 +108,9 @@ class Results extends Component<IProps> {
           </div>
 
           {resultsStore.view === 'grid' ? (
-            <ListView resultsStore={resultsStore} history={history} />
+            <ResultsListView store={resultsStore} />
           ) : (
-            <MapView />
+            <ResultsMapView store={resultsStore} />
           )}
         </div>
       </section>
