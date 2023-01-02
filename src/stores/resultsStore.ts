@@ -6,7 +6,14 @@ import axios from 'axios';
 import queryString from 'query-string';
 
 import { apiBase } from '../config/api';
-import { IParams, IOrganisation, IService, IGeoLocation } from '../types/types';
+import {
+  IParams,
+  IOrganisation,
+  IService,
+  IGeoLocation,
+  TOrderBy,
+  TResultsView,
+} from '../types/types';
 
 import { queryRegex, querySeparator } from '../utils/utils';
 
@@ -15,7 +22,7 @@ export default class ResultsStore {
   @observable organisations: IOrganisation[] | null = [];
   @observable is_free: boolean = false;
   @observable wait_time: string = 'null';
-  @observable order: 'relevance' | 'distance' = 'relevance';
+  @observable order: TOrderBy = 'relevance';
   @observable results: IService[] = [];
   @observable loading: boolean = false;
   @observable currentPage: number = 1;
@@ -23,7 +30,7 @@ export default class ResultsStore {
   @observable itemsPerPage: number = 25;
   @observable postcode: string = '';
   @observable locationCoords: IGeoLocation | {} = {};
-  @observable view: 'grid' | 'map' = 'grid';
+  @observable view: TResultsView = 'grid';
 
   @computed
   get isKeywordSearch() {

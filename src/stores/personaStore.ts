@@ -18,15 +18,15 @@ import {
 
 import { queryRegex, querySeparator, titleCase } from '../utils/utils';
 
-export default class CollectionStore {
-  @observable categorySlug: string = '';
-  @observable category: ICategory | null = null;
+export default class PersonaStore {
+  @observable personaSlug: string = '';
+  @observable persona: ICategory | null = null;
   @observable organisations: IOrganisation[] | null = [];
   @observable is_free: boolean = false;
   @observable wait_time: string = 'null';
   @observable order: TOrderBy = 'relevance';
   @observable results: IService[] = [];
-  @observable loading: boolean = false;
+  @observable loading: boolean = true;
   @observable currentPage: number = 1;
   @observable totalItems: number = 0;
   @observable itemsPerPage: number = 25;
@@ -36,13 +36,13 @@ export default class CollectionStore {
 
   @action
   clear() {
-    this.categorySlug = '';
-    this.category = null;
+    this.personaSlug = '';
+    this.persona = null;
     this.is_free = false;
     this.wait_time = 'null';
     this.order = 'relevance';
     this.results = [];
-    this.loading = true;
+    this.loading = false;
     this.organisations = [];
     this.currentPage = 1;
     this.totalItems = 0;
@@ -53,29 +53,29 @@ export default class CollectionStore {
   }
 
   @computed
-  get getCategoryName() {
-    return this.category && this.category.name ? this.category.name : titleCase(this.categorySlug);
+  get getPersonaName() {
+    return this.persona && this.persona.name ? this.persona.name : titleCase(this.personaSlug);
   }
 
   @action
-  getCollectionBySlug = async () => {
-    if (!this.categorySlug) return;
+  geCollectionBySlug = async () => {
+    if (!this.personaSlug) return;
 
     try {
-      const response = await axios.get(`${apiBase}/collections/categories/${this.categorySlug}`);
+      const response = await axios.get(`${apiBase}/collections/personas/${this.personaSlug}`);
 
       if (get(response, 'data.data.disabled', false)) {
         this.loading = false;
       } else {
-        this.category = get(response, 'data.data', '');
+        this.persona = get(response, 'data.data', '');
       }
     } catch (e) {
       console.error(e);
     }
   };
 
-  getSearchTerms = (categorySlug = '') => {
-    this.categorySlug = categorySlug;
+  getSearchTerms = (personaSlug = '') => {
+    this.personaSlug = personaSlug;
     const searchTerms = queryString.parse(window.location.search);
 
     this.setSearchTerms(searchTerms);
@@ -97,15 +97,15 @@ export default class CollectionStore {
       }
     });
 
-    if (this.categorySlug) await this.getCollectionBySlug();
+    if (this.personaSlug) await this.geCollectionBySlug();
 
-    if (this.category) this.setParams();
+    if (this.persona) this.setParams();
   };
 
   setParams = async () => {
     const params: IParams = {};
 
-    params.category = this.getCategoryName;
+    params.persona = this.getPersonaName;
 
     if (this.is_free) {
       params.is_free = this.is_free;

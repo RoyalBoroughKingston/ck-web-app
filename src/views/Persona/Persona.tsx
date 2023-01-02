@@ -4,7 +4,7 @@ import { History } from 'history';
 import { useLocation } from 'react-router-dom';
 import { get, map } from 'lodash';
 
-import CollectionStore from '../../stores/collectionStore';
+import PersonaStore from '../../stores/personaStore';
 
 // types
 import { ISidebox } from '../../types/types';
@@ -20,26 +20,26 @@ import NotFound from '../NotFound';
 
 interface IProps {
   location: Location;
-  collectionStore: CollectionStore;
+  personaStore: PersonaStore;
   history: History;
 }
 
-const Collection: React.FC<IProps> = ({ collectionStore }) => {
+const Persona: React.FC<IProps> = ({ personaStore }) => {
   const { search, pathname } = useLocation();
   const firstRender = useRef(true);
-  const { getCategoryName, category } = collectionStore;
+  const { getPersonaName, persona } = personaStore;
   const currentPath = pathname.substring(pathname.lastIndexOf('/') + 1);
 
   const hasCategories = () => {
-    if (collectionStore.category) return get(collectionStore, 'category.sideboxes', []);
+    if (personaStore.persona) return get(personaStore, 'persona.sideboxes', []);
     return null;
   };
 
   useEffect(() => {
-    if (currentPath) collectionStore.getSearchTerms(currentPath);
+    if (currentPath) personaStore.getSearchTerms(currentPath);
 
     return () => {
-      collectionStore.clear();
+      personaStore.clear();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -48,28 +48,29 @@ const Collection: React.FC<IProps> = ({ collectionStore }) => {
     if (firstRender.current) {
       firstRender.current = false;
     } else {
-      if (currentPath) collectionStore.getSearchTerms(currentPath);
+      if (currentPath) personaStore.getSearchTerms(currentPath);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  if (collectionStore.loading) return <Loading />;
+  if (personaStore.loading) return <Loading />;
 
   return (
     <section>
-      {collectionStore.category ? (
+      {personaStore.persona ? (
         <>
           <Breadcrumb
             crumbs={[
               { text: 'Home', url: '/' },
-              { text: 'Collections', url: '' },
-              { text: getCategoryName, url: '' },
+              { text: 'Personas', url: '' },
+              { text: getPersonaName, url: '' },
             ]}
           />
 
           <div className="results__search-box">
-            <CategoryCard store={collectionStore} category={category} />
+            <CategoryCard store={personaStore} category={persona} />
           </div>
+
           <div className="results__list">
             {hasCategories() && (
               <div className="sideboxes__container">
@@ -81,22 +82,22 @@ const Collection: React.FC<IProps> = ({ collectionStore }) => {
 
             <div className="flex-container flex-container results__filter-bar">
               <div className="flex-col flex-col--4 flex-col--tablet--12 flex-col--mobile--12 results__container-count">
-                {!!collectionStore.results.length && !collectionStore.loading && (
+                {!!personaStore.results.length && !personaStore.loading && (
                   <p>
-                    {collectionStore.view === 'grid'
+                    {personaStore.view === 'grid'
                       ? `${
-                          collectionStore.totalItems > 25 ? 'Over 25' : collectionStore.totalItems
+                          personaStore.totalItems > 25 ? 'Over 25' : personaStore.totalItems
                         } services found`
-                      : `${collectionStore.serviceWithLocations} services shown. Some services are only available online or by phone`}
+                      : `${personaStore.serviceWithLocations} services shown. Some services are only available online or by phone`}
                   </p>
                 )}
               </div>
             </div>
 
-            {collectionStore.view === 'grid' ? (
-              <ResultsListView store={collectionStore} />
+            {personaStore.view === 'grid' ? (
+              <ResultsListView store={personaStore} />
             ) : (
-              <ResultsMapView store={collectionStore} />
+              <ResultsMapView store={personaStore} />
             )}
           </div>
         </>
@@ -107,4 +108,4 @@ const Collection: React.FC<IProps> = ({ collectionStore }) => {
   );
 };
 
-export default inject('collectionStore')(observer(Collection));
+export default inject('personaStore')(observer(Persona));

@@ -18,6 +18,7 @@ import GetInvolved from './views/GetInvolved';
 import Privacy from './views/Privacy';
 import DutyToRefer from './views/DutyToRefer';
 import Collection from './views/Collection';
+import Persona from './views/Persona';
 
 import Footer from './components/Footer/Footer';
 import Header from './components/Header';
@@ -28,6 +29,7 @@ import WindowSizeStore from './stores/windowSizeStore';
 import UIStore from './stores/uiStore';
 import ResultsStore from './stores/resultsStore';
 import CollectionStore from './stores/collectionStore';
+import PersonaStore from './stores/personaStore';
 import ServiceStore from './stores/serviceStore';
 import FavouritesStore from './stores/favouritesStore';
 import CMSStore from './stores/CMSStore';
@@ -43,6 +45,7 @@ const windowSizeStore = new WindowSizeStore();
 const uiStore = new UIStore();
 const resultsStore = new ResultsStore();
 const collectionStore = new CollectionStore();
+const personaStore = new PersonaStore();
 const serviceStore = new ServiceStore();
 const favouritesStore = new FavouritesStore();
 const cmsStore = new CMSStore();
@@ -60,6 +63,7 @@ class App extends Component {
         uiStore={uiStore}
         resultsStore={resultsStore}
         collectionStore={collectionStore}
+        personaStore={personaStore}
         serviceStore={serviceStore}
         favouritesStore={favouritesStore}
         cmsStore={cmsStore}
@@ -73,6 +77,7 @@ class App extends Component {
               <Route path="/results" component={Results} />
               <Route path="/services/:service" component={Service} />
               <Route path="/collections/:collection" component={Collection} />
+              <Route path="/personas/:persona" component={Persona} />
               <Route path="/favourites" component={Favourites} />
               <Route path="/referral" component={Referral} />
               <Route path="/about" component={About} />
