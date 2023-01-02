@@ -1,0 +1,46 @@
+@import '../../styles/colors.scss';
+@import '../../styles/fonts.scss';
+@import '../../styles/breakpoints.scss';
+
+.search__cateogry-list {
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.25rem;
+
+    @include for-tablet-portrait-up {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @include for-desktop-up {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @include for-big-desktop-up {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+
+  &__link-with-image {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 1rem;
+    border-radius: 20px;
+    background-color: $white;
+    color: inherit;
+    border: 2px solid $san-juan;
+    font-size: $font-heading-m;
+   
+    &:hover {
+      box-shadow: 0 2px 4px 0 rgba(56, 56, 56, 0.5);
+      cursor: pointer;
+    }
+
+  }
+
+  &__image {
+    padding-right: 1rem;
+    max-height: 61px;
+  }
+}

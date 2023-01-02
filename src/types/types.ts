@@ -26,6 +26,7 @@ export interface ICategory {
   name: string;
   icon: IconName | undefined;
   sideboxes: ISidebox[];
+  image_file_id?: string;
 }
 
 export interface IOrganisation {
