@@ -26,7 +26,7 @@ export default class CollectionStore {
   @observable wait_time: string = 'null';
   @observable order: TOrderBy = 'relevance';
   @observable results: IService[] = [];
-  @observable loading: boolean = false;
+  @observable loading: boolean = true;
   @observable currentPage: number = 1;
   @observable totalItems: number = 0;
   @observable itemsPerPage: number = 25;
