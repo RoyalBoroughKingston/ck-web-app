@@ -12,15 +12,18 @@
   @include for-tablet-portrait-down {
     padding: 0 !important;
   }
-}
+  @media(max-width: 860px) {
+    margin-top: space(8) !important;
+  }
 
-.category_filters--header--cost {
-  @include heading-m;
-  margin-bottom: space(24);
-
-  @include for-phone-only {
-    font-size: pxtorem(14px);
-    color: $waikawa;
-    margin-bottom: space(8);
+  &--header--cost {
+    @include heading-m;
+    margin-bottom: space(16);
+  
+    @include for-phone-only {
+      font-size: pxtorem(14px);
+      color: $waikawa;
+      margin-bottom: space(8);
+    }
   }
 }

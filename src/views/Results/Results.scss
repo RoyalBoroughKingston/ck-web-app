@@ -398,7 +398,7 @@
 .sideboxes__container {
   display: grid;
   gap: space(24);
-  margin: space(8) 0 space(32);
+  margin-bottom: space(24);
   padding: 0 1rem;
 
   @include for-tablet-portrait-up {

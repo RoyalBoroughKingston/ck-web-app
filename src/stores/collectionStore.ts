@@ -70,7 +70,7 @@ export default class CollectionStore {
         this.category = get(response, 'data.data', '');
       }
     } catch (e) {
-      console.error(e);
+      this.loading = false;
     }
   };
 

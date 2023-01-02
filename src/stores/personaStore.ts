@@ -70,7 +70,7 @@ export default class PersonaStore {
         this.persona = get(response, 'data.data', '');
       }
     } catch (e) {
-      console.error(e);
+      this.loading = false;
     }
   };
 

@@ -11,6 +11,10 @@
 
     h3 {
       color: $san-juan;
+
+      @include for-phone-only {
+        font-size: $font-body-l;
+      }
     }
   
     p {

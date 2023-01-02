@@ -10,7 +10,7 @@ interface IProps {
 }
 
 const SideboxCard: React.FC<IProps> = ({ sidebox }) => (
-  <div className="sidebox--container sidebox">
+  <div className="sidebox--container">
     <h3>{sidebox.title}</h3>
 
     <ReactMarkdown source={sidebox.content} />

@@ -26,7 +26,7 @@ const CategoryFilter: React.FC<IProps> = ({ store }) => {
       >
         <div className="flex-col flex-col--4 flex-col--tablet-large--4 flex-col--mobile--6 flex-col--medium--4 flex-col--tablet--6 flex-col--mobile-small--5 flex-container--mobile-no-padding">
           <p
-            className="category_filters--header--cost"
+            className="category__filters--header--cost"
             aria-label={store.is_free ? 'View paid services' : 'View free services'}
           >
             Cost
