@@ -49,8 +49,7 @@ const CategoryList: React.FunctionComponent<IProps> = ({
           icon={icon}
           onClick={() => {
             history.push({
-              pathname: '/results',
-              search: `?category=${id}`,
+              pathname: `/collections/${slug}`,
             });
           }}
           covid={covid}
