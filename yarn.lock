@@ -2191,7 +2191,7 @@
   "resolved" "https://registry.npmjs.org/@types/react-router-dom/-/react-router-dom-4.3.5.tgz"
   "version" "4.3.5"
   dependencies:
-    "@types/history" "*"
+    "@types/history" "^4.7.11"
     "@types/react" "*"
     "@types/react-router" "*"
 

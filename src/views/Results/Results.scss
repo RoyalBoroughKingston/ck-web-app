@@ -260,6 +260,10 @@
     padding: 0 !important;
   }
 
+  @include for-desktop-up {
+    margin-top: space(64) !important;
+  }
+
   &--intro {
     color: $waikawa;
     margin: space(10) 0;
@@ -389,4 +393,33 @@
   @include for-tablet-portrait-down {
     margin-bottom: space(16) !important;
   }
+}
+
+.sideboxes__container {
+  display: grid;
+  gap: space(24);
+  margin-bottom: space(24);
+  padding: 0 1rem;
+
+  @include for-tablet-portrait-up {
+    padding: 0 0.5rem;
+  }
+
+  @include for-tablet-landscape-up {
+    grid-template-columns: repeat(3, 1fr);  
+  }
+
+  @media(min-width: 861px) {
+    padding: 0 1.6rem;
+  }
+
+  @include for-tablet-landscape-up  {
+    margin-top: 0;
+    padding: 0 3rem;
+  }
+
+  @include  for-desktop-up {
+    padding: 0 1.4rem; 
+  }
+
 }

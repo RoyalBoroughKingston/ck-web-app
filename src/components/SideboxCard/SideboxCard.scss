@@ -1,0 +1,31 @@
+@import '../../styles/mixins.scss';
+@import '../../styles/colors.scss';
+@import '../../styles/fonts.scss';
+@import '../../styles/breakpoints.scss';
+
+.sidebox {
+  &--container {
+    padding: space(24) !important;
+    background: $alabaster;
+    border-radius: 25px;
+
+    h3 {
+      color: $san-juan;
+
+      @include for-phone-only {
+        font-size: $font-body-l;
+      }
+    }
+  
+    p {
+      @include body-s;
+      color: $mid-grey;
+      margin: space(8) 0;
+    }
+  
+    a {
+      @include body-s;
+      color: $elm;
+    }
+  }
+}
