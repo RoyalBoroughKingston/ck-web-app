@@ -10,10 +10,6 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    // 'plugin:import/typescript',
-    // 'prettier',
-    // 'prettier/react',
-    // 'prettier/@typescript-eslint',
   ],
   globals: {
     Atomics: 'readonly',
@@ -37,20 +33,6 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'react-hooks', 'eslint-plugin-react'],
   rules: {
-    //   'prettier/prettier': [
-    //     0,
-    //     {
-    //       semi: true,
-    //       singleQuote: false,
-    //       trailingComma: 'es5',
-    //       printWidth: 100,
-    //       tabWidth: 2,
-    //       arrowParens: 'avoid',
-    //       jsxSingleQuote: false,
-    //       jsxBracketSameLine: true,
-    //     },
-    //   ],
-
     semi: 0,
     eqeqeq: 0,
     quotes: [1, 'single'],
@@ -77,8 +59,6 @@ module.exports = {
     'prefer-promise-reject-errors': 0,
     'no-unused-expressions': 0,
     'no-extra-boolean-cast': 0,
-    // "dot-notation": 0,
-
     'import/prefer-default-export': 0,
     'import/no-useless-path-segments': 1,
     'import/no-unresolved': 0,
