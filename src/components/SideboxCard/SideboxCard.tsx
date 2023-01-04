@@ -13,7 +13,7 @@ const SideboxCard: React.FC<IProps> = ({ sidebox }) => (
   <div className="sidebox--container">
     <h3>{sidebox.title}</h3>
 
-    <ReactMarkdown source={sidebox.content} />
+    <ReactMarkdown children={sidebox.content} />
   </div>
 );
 

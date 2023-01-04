@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import find from 'lodash/find';
 import map from 'lodash/map';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -36,14 +36,14 @@ const ResultsMapView: React.FC<IProps> = ({ store }) => {
   };
 
   const getMarker = (type: string) => {
-    switch (true) {
-      case type === 'service':
+    switch (type) {
+      case 'service':
         return ServiceMarker;
-      case type === 'group':
+      case 'group':
         return GroupMarker;
-      case type === 'activity':
+      case 'activity':
         return ActivityMarker;
-      case type === 'club':
+      case 'club':
         return ClubMarker;
       default:
         break;
@@ -62,7 +62,7 @@ const ResultsMapView: React.FC<IProps> = ({ store }) => {
   return (
     <main className="flex-container">
       <div className="flex-col--9 flex-col--mobile--12 map">
-        <Map cente={CENTRE_OF_KINGSTON} attributionControl={false} bounds={bounds}>
+        <MapContainer center={CENTRE_OF_KINGSTON} attributionControl={false} bounds={bounds}>
           <TileLayer url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png" />
           {store.results.map((result: IService) => {
             const organisation = find(store.organisations, ['id', result.organisation_id]) || null;
@@ -88,7 +88,7 @@ const ResultsMapView: React.FC<IProps> = ({ store }) => {
 
             return null;
           })}
-        </Map>
+        </MapContainer>
       </div>
       <div className="flex-col--3 flex-col--mobile--12 map__key--container">
         <h3 className="map__key--heading">Map key</h3>
