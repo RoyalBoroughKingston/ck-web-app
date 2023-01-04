@@ -3,7 +3,7 @@
 
 // Define grid variables
 $total-columns: 12;
-$gutter-width: 0px/105px;
+$gutter-width: calc(0px/105px);
 $container-width: 1260px;
 $base-line-height: 16px;
 $base-margin: 16px;
@@ -139,7 +139,7 @@ body {
   // Column width
   @for $i from 1 to $total-columns + 1 {
     &--#{$i} {
-      width: percentage($i/$total-columns);
+      width: percentage(calc($i/$total-columns));
     }
   }
 
@@ -160,7 +160,7 @@ body {
       // Column width
       @for $i from 1 to $total-columns + 1 {
         &--#{$i} {
-          width: percentage($i/$total-columns);
+          width: percentage(calc($i/$total-columns));
         }
       }
     }
@@ -171,7 +171,7 @@ body {
       // Column width
       @for $i from 1 to $total-columns + 1 {
         &--#{$i} {
-          width: percentage($i/$total-columns);
+          width: percentage(calc($i/$total-columns));
         }
       }
     }
@@ -182,7 +182,7 @@ body {
       // Column width
       @for $i from 1 to $total-columns + 1 {
         &--#{$i} {
-          width: percentage($i/$total-columns);
+          width: percentage(calc($i/$total-columns));
         }
       }
     }
@@ -193,7 +193,7 @@ body {
       // Column width
       @for $i from 1 to $total-columns + 1 {
         &--#{$i} {
-          width: percentage($i/$total-columns);
+          width: percentage(calc($i/$total-columns));
         }
       }
     }
@@ -218,7 +218,7 @@ body {
       // Column width
       @for $i from 1 to $total-columns + 1 {
         &--#{$i} {
-          width: percentage($i/$total-columns);
+          width: percentage(calc($i/$total-columns));
           margin-bottom: 0;
 
           &:last-child {
@@ -234,7 +234,7 @@ body {
       // Column width
       @for $i from 1 to $total-columns + 1 {
         &--#{$i} {
-          width: percentage($i/$total-columns);
+          width: percentage(calc($i/$total-columns));
         }
       }
     }

@@ -8,7 +8,7 @@
 
 @function pxtorem($pixels) {
   /* Convert px to rem using base font of 16px */
-  @return $pixels / 16px * 1rem;
+  @return  calc($pixels / 16px) * 1rem;
 }
 
 @function space($pixels) {
