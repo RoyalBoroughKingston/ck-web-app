@@ -3,31 +3,31 @@ import Pagination from 'react-js-pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import find from 'lodash/find';
 import { observer } from 'mobx-react';
+import { useHistory } from 'react-router-dom';
 
-import SearchResultCard from '../../../components/SearchResultCard';
+import { IService } from '../../types/types';
 
-import { IService } from '../../../types/types';
-import ResultsStore from '../../../stores/resultsStore';
-import { History } from 'history';
-import Loading from '../../../components/Loading';
+// componnets
+import SearchResultCard from '../SearchResultCard';
+import Loading from '../Loading';
 
 interface IProps {
-  resultsStore: ResultsStore;
-  history: History;
+  store: any;
 }
 
-const ListView: React.FunctionComponent<IProps> = ({ resultsStore, history }) => {
-  if (resultsStore.loading) {
+const ResultsListView: React.FC<IProps> = ({ store }) => {
+  const history = useHistory();
+
+  if (store.loading) {
     return <Loading />;
   }
 
   return (
     <Fragment>
       <main className="results__container">
-        {!!resultsStore.results.length ? (
-          resultsStore.results.map((result: IService) => {
-            const organisation =
-              find(resultsStore.organisations, ['id', result.organisation_id]) || null;
+        {!!store.results.length ? (
+          store.results.map((result: IService) => {
+            const organisation = find(store.organisations, ['id', result.organisation_id]) || null;
 
             return <SearchResultCard key={result.id} result={result} organisation={organisation} />;
           })
@@ -37,16 +37,16 @@ const ListView: React.FunctionComponent<IProps> = ({ resultsStore, history }) =>
       </main>
 
       <div className="flex-container flex-container--justify pagnation__container">
-        {resultsStore.totalItems > resultsStore.itemsPerPage && (
+        {store.totalItems > store.itemsPerPage && (
           <Pagination
-            activePage={resultsStore.currentPage}
-            itemsCountPerPage={resultsStore.itemsPerPage}
-            totalItemsCount={resultsStore.totalItems}
+            activePage={store.currentPage}
+            itemsCountPerPage={store.itemsPerPage}
+            totalItemsCount={store.totalItems}
             pageRangeDisplayed={10}
             onChange={(pageNumber: number) => {
-              resultsStore.paginate(pageNumber);
+              store.paginate(pageNumber);
               history.push({
-                search: resultsStore.updateQueryStringParameter('page', pageNumber),
+                search: store.updateQueryStringParameter('page', pageNumber),
               });
             }}
             prevPageText={
@@ -75,4 +75,4 @@ const ListView: React.FunctionComponent<IProps> = ({ resultsStore, history }) =>
   );
 };
 
-export default observer(ListView);
+export default observer(ResultsListView);

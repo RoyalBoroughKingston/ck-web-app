@@ -1,8 +1,13 @@
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 
+export type TOrderBy = 'relevance' | 'distance';
+
+export type TResultsView = 'grid' | 'map';
+
 export interface IPersona {
   created_at: string;
   id: string;
+  slug: string;
   intro: string;
   name: string;
   sideboxes: ISidebox[];
@@ -22,6 +27,7 @@ export interface IParams {
 
 export interface ICategory {
   id: string;
+  slug: string;
   intro: string;
   name: string;
   icon: IconName | undefined;

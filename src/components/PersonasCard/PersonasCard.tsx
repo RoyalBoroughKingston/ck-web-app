@@ -12,7 +12,7 @@ interface IProps {
   windowSizeStore?: WindowSizeStore;
 }
 
-const PersonasCard: React.FunctionComponent<IProps> = ({ persona, action, windowSizeStore }) => (
+const PersonasCard: React.FunctionComponent<IProps> = ({ persona, action }) => (
   <article className="card" onClick={action} role="navigation" tabIndex={0}>
     <img
       src={`${apiBase}/collections/personas/${persona.id}/image.png?max_dimension=300`}
