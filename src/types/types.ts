@@ -10,6 +10,8 @@ export interface IPersona {
   slug: string;
   intro: string;
   name: string;
+  homepage: boolean;
+  disabled: boolean;
   sideboxes: ISidebox[];
   subtitle: string;
   updated_at: string;
@@ -30,6 +32,8 @@ export interface ICategory {
   slug: string;
   intro: string;
   name: string;
+  homepage: boolean;
+  disabled: boolean;
   icon: IconName | undefined;
   sideboxes: ISidebox[];
   image_file_id?: string;

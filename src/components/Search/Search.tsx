@@ -40,6 +40,13 @@ class Search extends React.Component<IProps> {
     const { isMobile } = windowSizeStore;
     const options = map(SearchStore.categories, ({ name, id }) => ({ value: id, text: name }));
 
+    const filteredHomepageCategories = get(SearchStore, 'categories', []).filter(
+      _ => _.homepage && !_.disabled
+    );
+    const filteredHomepagePersonas = get(SearchStore, 'personas', []).filter(
+      _ => _.homepage && !_.disabled
+    );
+
     return (
       <Fragment>
         <section className="flex-container flex-container--justify search__container">
@@ -135,7 +142,7 @@ class Search extends React.Component<IProps> {
                 )}
                 {!isMobile && (
                   <div className="search__cateogry-list search__cateogry-list__grid">
-                    <CategoryList showCollectionImage categories={SearchStore.categories} />
+                    <CategoryList showCollectionImage categories={filteredHomepageCategories} />
                   </div>
                 )}
               </div>
@@ -143,7 +150,7 @@ class Search extends React.Component<IProps> {
           </form>
         </section>
         <section>
-          <Personas personas={SearchStore.personas} />
+          <Personas personas={filteredHomepagePersonas} />
         </section>
       </Fragment>
     );
