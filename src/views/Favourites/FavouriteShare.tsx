@@ -4,6 +4,7 @@ import Button from '../../components/Button';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import FavouritesStore from '../../stores/favouritesStore';
+
 interface IProps {
   favouritesStore?: FavouritesStore;
 }
