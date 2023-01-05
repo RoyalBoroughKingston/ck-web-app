@@ -5,7 +5,7 @@ import cx from 'classnames';
 import get from 'lodash/get';
 import uniqueId from 'lodash/uniqueId';
 import orderBy from 'lodash/orderBy';
-import ReactSVG from 'react-svg';
+import { ReactSVG } from 'react-svg';
 
 import './LocationCard.scss';
 
