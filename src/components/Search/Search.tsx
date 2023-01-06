@@ -38,11 +38,15 @@ class Search extends React.Component<IProps> {
     }
 
     const { isMobile } = windowSizeStore;
-    const options = map(SearchStore.categories, ({ name, id }) => ({ value: id, text: name }));
+
+    const categoryOptions = get(SearchStore, 'categories', [])
+      .filter(_ => _.homepage && !_.disabled)
+      .map(({ name, slug }) => ({ value: slug, text: name }));
 
     const filteredHomepageCategories = get(SearchStore, 'categories', []).filter(
       _ => _.homepage && !_.disabled
     );
+
     const filteredHomepagePersonas = get(SearchStore, 'personas', []).filter(
       _ => _.homepage && !_.disabled
     );
@@ -113,7 +117,7 @@ class Search extends React.Component<IProps> {
                       {get(cmsStore, 'home.personas_content')}
                     </p>
                     <Select
-                      options={options}
+                      options={categoryOptions}
                       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                         SearchStore.setCategory(e)
                       }
@@ -129,8 +133,7 @@ class Search extends React.Component<IProps> {
                       onClick={() =>
                         SearchStore.categoryId
                           ? history.push({
-                              pathname: '/results',
-                              search: `?category=${SearchStore.categoryId}`,
+                              pathname: `/collections/${SearchStore.categoryId}`,
                             })
                           : history.push({
                               pathname: '/results',
