@@ -240,7 +240,7 @@ class Service extends Component<IProps> {
                 <div className="flex-container flex-container--align-center service__section service__section--no-padding service__information">
                   <div className="flex-col flex-col--12 flex-col--mobile--12">
                     <ReactMarkdown
-                      source={service.intro}
+                      children={service.intro}
                       className="service__markdown service__markdown--intro"
                     />
                   </div>
@@ -266,7 +266,7 @@ class Service extends Component<IProps> {
 
                   <div className="flex-col flex-col--mobile--12 service__section">
                     <ReactMarkdown
-                      source={service.description}
+                      children={service.description}
                       className={cx('service__markdown service__markdown--description', {
                         'service__markdown--description--tight': !service.offerings.length,
                       })}

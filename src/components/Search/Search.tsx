@@ -4,7 +4,6 @@ import map from 'lodash/map';
 import { withRouter, RouteComponentProps } from 'react-router';
 import cx from 'classnames';
 import get from 'lodash/get';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import SearchStore from './store';
 
@@ -39,36 +38,40 @@ class Search extends React.Component<IProps> {
     }
 
     const { isMobile } = windowSizeStore;
-    const options = map(SearchStore.categories, ({ name, id }) => ({ value: id, text: name }));
-    const covidOptions = map(SearchStore.covidCategories, ({ name, id }) => ({
-      value: id,
-      text: name,
-    }));
+
+    const categoryOptions = get(SearchStore, 'categories', [])
+      .filter(_ => _.homepage && !_.disabled)
+      .map(({ name, slug }) => ({ value: slug, text: name }));
+
+    const filteredHomepageCategories = get(SearchStore, 'categories', []).filter(
+      _ => _.homepage && !_.disabled
+    );
+
+    const filteredHomepagePersonas = get(SearchStore, 'personas', []).filter(
+      _ => _.homepage && !_.disabled
+    );
 
     return (
       <Fragment>
         <section className="flex-container flex-container--justify search__container">
           {cmsStore.hasBanner && cmsStore.banner && <Banner banner={cmsStore.banner} />}
           <form className="flex--col--12 search__inner-container">
-            <div className="flex-container flex-container--mobile-no-padding">
+            <div className="flex-container flex-container--mobile-no-padding flex-container--no-padding">
               <div
-                className={cx('flex-col--12 search__input flex-col--mobile--12', {
+                className={cx('flex-col--12 search__input flex-col--mobile--12 ', {
                   'flex-col--mobile--12': isMobile,
                 })}
               >
-                <div className="flex-container flex-container--align-center flex-container--mobile-no-padding search__input--row">
-                  <div className="flex-col--12">
-                    <label htmlFor="search">
-                      <h1 className="search__heading">{get(cmsStore, 'home.search_title')}</h1>
-                    </label>
-                  </div>
+                <div className="search__input--row">
+                  <label htmlFor="search">
+                    <h1 className="search__heading">{get(cmsStore, 'home.search_title')}</h1>
+                  </label>
                   <div
                     className="flex-container flex-container--align-center flex-container--mobile-no-padding"
                     style={{
                       width: '100%',
                       padding: 0,
                       justifyContent: 'start',
-                      marginBottom: 24,
                     }}
                   >
                     <div
@@ -105,39 +108,6 @@ class Search extends React.Component<IProps> {
                 </div>
               </div>
               <div className="flex-col--12">
-                {!!SearchStore.covidCategories.length && (
-                  <Fragment>
-                    <label className="search__heading" htmlFor="category">
-                      COVID-19 <FontAwesomeIcon icon="virus" />
-                    </label>
-                    <div className="flex-col--6 flex-col--mobile--12">
-                      <p className="search__category-subtitle">
-                        Find up to date information and support in Kingston to help you take care of
-                        yourself and your community.
-                      </p>
-                    </div>
-                    {!isMobile && (
-                      <div className="search__cateogry-list" style={{ marginBottom: 24 }}>
-                        <CategoryList categories={SearchStore.covidCategories} covid={true} />
-                      </div>
-                    )}
-
-                    {isMobile && (
-                      <Fragment>
-                        <Select
-                          options={covidOptions}
-                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                            SearchStore.setCategory(e)
-                          }
-                          className="search__category--mobile"
-                          placeholder="Category List"
-                          id="category"
-                        />
-                      </Fragment>
-                    )}
-                  </Fragment>
-                )}
-
                 <label className="search__heading" htmlFor="category">
                   {get(cmsStore, 'home.categories_title')}
                 </label>
@@ -147,7 +117,7 @@ class Search extends React.Component<IProps> {
                       {get(cmsStore, 'home.personas_content')}
                     </p>
                     <Select
-                      options={options}
+                      options={categoryOptions}
                       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                         SearchStore.setCategory(e)
                       }
@@ -163,8 +133,7 @@ class Search extends React.Component<IProps> {
                       onClick={() =>
                         SearchStore.categoryId
                           ? history.push({
-                              pathname: '/results',
-                              search: `?category=${SearchStore.categoryId}`,
+                              pathname: `/collections/${SearchStore.categoryId}`,
                             })
                           : history.push({
                               pathname: '/results',
@@ -175,8 +144,8 @@ class Search extends React.Component<IProps> {
                   </Fragment>
                 )}
                 {!isMobile && (
-                  <div className="search__cateogry-list">
-                    <CategoryList categories={SearchStore.categories} />
+                  <div className="search__cateogry-list search__cateogry-list__grid">
+                    <CategoryList showCollectionImage categories={filteredHomepageCategories} />
                   </div>
                 )}
               </div>
@@ -184,7 +153,7 @@ class Search extends React.Component<IProps> {
           </form>
         </section>
         <section>
-          <Personas personas={SearchStore.personas} />
+          <Personas personas={filteredHomepagePersonas} />
         </section>
       </Fragment>
     );

@@ -20,26 +20,25 @@ const Personas: React.FunctionComponent<IProps> = ({ personas, history, cmsStore
 
   return (
     <section className="personas" role="button">
-      <div className="flex-container">
-        <div className="flex-col flex-col--12 personas--intro">
-          <h2 className="personas__heading">{get(cmsStore, 'home.personas_title')}</h2>
+      <div className="personas__inner-container">
+        <div className="personas--intro">
+          <h2 className="search__heading">{get(cmsStore, 'home.personas_title')}</h2>
           <p>{get(cmsStore, 'home.personas_content')}</p>
         </div>
-      </div>
 
-      <div className="personas__list flex-container flex-container--left">
-        {personas.map(persona => (
-          <PersonasCard
-            key={persona.id}
-            persona={persona}
-            action={() => {
-              history.push({
-                pathname: '/results',
-                search: `?persona=${persona.id}`,
-              });
-            }}
-          />
-        ))}
+        <div className="personas__list">
+          {personas.map(persona => (
+            <PersonasCard
+              key={persona.id}
+              persona={persona}
+              action={() => {
+                history.push({
+                  pathname: `/personas/${persona.slug}`,
+                });
+              }}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

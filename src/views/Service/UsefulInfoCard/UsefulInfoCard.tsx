@@ -22,7 +22,7 @@ const UsefulInfoCardAccordian: React.FunctionComponent<IProps> = ({ icon, info }
       <h4>{info.title}</h4>
     </div>
     <div className="flex-col flex-col--mobile--12">
-      <ReactMarkdown source={info.description} />
+      <ReactMarkdown children={info.description} />
     </div>
   </div>
 );
@@ -38,7 +38,7 @@ const UsefulInfoCard: React.FunctionComponent<IProps> = ({ icon, info }) => (
           <h4>{info.title}</h4>
         </div>
         <div className="flex-col flex-col--12">
-          <ReactMarkdown source={info.description} />
+          <ReactMarkdown children={info.description} />
         </div>
       </div>
     </div>

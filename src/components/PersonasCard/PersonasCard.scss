@@ -4,71 +4,48 @@
 @import '../../styles/fonts.scss';
 
 .card {
-  display: flex;
-  align-content: center;
-  background-color: $alabaster;
+  background-color: $white;
   font-family: $font-secondary;
   color: $san-juan;
-  border-radius: 25px;
-  margin: space(32);
+  position: relative;
   cursor: pointer;
-
-  .flex-container {
-    padding: 0 !important;
-    width: 100%;
-    align-items: stretch;
-    height: 100%;
-
-    @include for-phone-only {
-      margin: 0 !important;
-    }
-  }
 
   &:hover {
     box-shadow: 0 2px 4px 0 rgba(56, 56, 56, 0.5);
   }
 
-  @include for-tablet-landscape-up {
-    max-width: pxtorem(300px);
-  }
-
-  @include for-tablet-portrait-down {
-    margin: space(12);
-  }
-
   @include for-phone-only {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
     background-color: $white;
-    margin: space(20) 0;
-  }
+    padding: space(24);
 
-  @include for-phone-only {
-    border-radius: 11px;
-
-    img {
-      border-radius: 11px;
-    }
   }
 
   @include for-tablet-portrait-up {
-    flex-direction: column;
+    // flex-direction: column;
   }
 
   img {
     width: 100%;
-    height: 100%;
-    border-top-left-radius: 11px;
-    border-top-right-radius: 11px;
 
     @include for-phone-only {
-      border-top-right-radius: 0px;
-      border-bottom-right-radius: 0px;
+      width: 118px;
+    }
+
+    @include for-tablet-portrait-up {
+      height: 252px;
+      object-fit: cover;
     }
   }
 }
 
 .card__header {
-  @include for-phone-only {
-    font-size: $font-base;
+  font-size: pxtorem(20px);
+
+  @include for-tablet-portrait-up {
+    margin-bottom: space(24);
   }
 
   @include for-desktop-up {
@@ -77,17 +54,28 @@
 }
 
 .card__description {
-  box-sizing: border-box;
-  padding: space(16) space(20);
-  height: 100%;
-
-  @include for-phone-only {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+  padding: space(20) space(20) space(80);
 
   @include for-phone-only {
     padding: space(16);
+  }
+
+  p {
+    color: $gray-dark;
+    line-height: pxtorem(28px);
+  }
+}
+
+.card__link {
+  display: block;
+  text-align: right;
+  position: absolute;
+  bottom: 2rem;
+  right: space(24);
+  color: $gray-dark;
+  font-size: pxtorem(18px);
+
+  @include for-phone-only {
+    display: none;
   }
 }

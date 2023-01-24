@@ -8,6 +8,7 @@ import queryString from 'query-string';
 import { apiBase } from '../config/api';
 import {
   IParams,
+  ICategory,
   IOrganisation,
   IService,
   IGeoLocation,
@@ -15,16 +16,17 @@ import {
   TResultsView,
 } from '../types/types';
 
-import { queryRegex, querySeparator } from '../utils/utils';
+import { queryRegex, querySeparator, titleCase } from '../utils/utils';
 
-export default class ResultsStore {
-  @observable keyword: string = '';
+export default class PersonaStore {
+  @observable personaSlug: string = '';
+  @observable persona: ICategory | null = null;
   @observable organisations: IOrganisation[] | null = [];
   @observable is_free: boolean = false;
   @observable wait_time: string = 'null';
   @observable order: TOrderBy = 'relevance';
   @observable results: IService[] = [];
-  @observable loading: boolean = false;
+  @observable loading: boolean = true;
   @observable currentPage: number = 1;
   @observable totalItems: number = 0;
   @observable itemsPerPage: number = 25;
@@ -32,14 +34,10 @@ export default class ResultsStore {
   @observable locationCoords: IGeoLocation | {} = {};
   @observable view: TResultsView = 'grid';
 
-  @computed
-  get isKeywordSearch() {
-    return !!this.keyword;
-  }
-
   @action
   clear() {
-    this.keyword = '';
+    this.personaSlug = '';
+    this.persona = null;
     this.is_free = false;
     this.wait_time = 'null';
     this.order = 'relevance';
@@ -54,7 +52,30 @@ export default class ResultsStore {
     this.view = 'grid';
   }
 
-  getSearchTerms = () => {
+  @computed
+  get getPersonaName() {
+    return this.persona && this.persona.name ? this.persona.name : titleCase(this.personaSlug);
+  }
+
+  @action
+  geCollectionBySlug = async () => {
+    if (!this.personaSlug) return;
+
+    try {
+      const response = await axios.get(`${apiBase}/collections/personas/${this.personaSlug}`);
+
+      if (get(response, 'data.data.disabled', false)) {
+        this.loading = false;
+      } else {
+        this.persona = get(response, 'data.data', '');
+      }
+    } catch (e) {
+      this.loading = false;
+    }
+  };
+
+  getSearchTerms = (personaSlug = '') => {
+    this.personaSlug = personaSlug;
     const searchTerms = queryString.parse(window.location.search);
 
     this.setSearchTerms(searchTerms);
@@ -63,10 +84,6 @@ export default class ResultsStore {
   @action
   setSearchTerms = async (searchTerms: { [key: string]: any }) => {
     forEach(searchTerms, (key, value) => {
-      if (value === 'search_term') {
-        this.keyword = key;
-      }
-
       if (value === 'is_free') {
         this.is_free = key === 'true' ? true : false;
       }
@@ -78,21 +95,17 @@ export default class ResultsStore {
       if (value === 'page') {
         this.currentPage = Number(key);
       }
-
-      if (value === 'location') {
-        this.postcode = key;
-      }
     });
 
-    if (this.postcode) {
-      await this.geolocate();
-    }
+    if (this.personaSlug) await this.geCollectionBySlug();
 
-    this.setParams();
+    if (this.persona) this.setParams();
   };
 
   setParams = async () => {
     const params: IParams = {};
+
+    params.persona = this.getPersonaName;
 
     if (this.is_free) {
       params.is_free = this.is_free;
@@ -100,10 +113,6 @@ export default class ResultsStore {
 
     if (this.wait_time !== 'null') {
       params.wait_time = this.wait_time;
-    }
-
-    if (this.keyword) {
-      params.query = this.keyword;
     }
 
     if (size(this.locationCoords)) {
@@ -183,39 +192,6 @@ export default class ResultsStore {
   };
 
   @action
-  postcodeChange = (postcode: string) => {
-    this.postcode = postcode.replace(' ', '');
-  };
-
-  amendSearch = (searchTerm?: string) => {
-    let url = window.location.search;
-
-    if (this.postcode) {
-      url = this.updateQueryStringParameter('location', this.postcode);
-    }
-
-    if (!this.postcode) {
-      url = this.removeQueryStringParameter('location', url);
-      this.locationCoords = {};
-    }
-
-    if (this.is_free) {
-      url = this.updateQueryStringParameter('is_free', this.is_free, url);
-    }
-
-    if (!this.is_free) {
-      url = this.removeQueryStringParameter('is_free', url);
-    }
-
-    if (searchTerm) {
-      url = this.updateQueryStringParameter('search_term', searchTerm, url);
-    }
-
-    this.results = [];
-    return url;
-  };
-
-  @action
   geolocate = async () => {
     try {
       const geolocation = await axios.get(
@@ -231,11 +207,6 @@ export default class ResultsStore {
     } catch (e) {
       console.error(e);
     }
-  };
-
-  @action
-  handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.keyword = e.target.value;
   };
 
   @action

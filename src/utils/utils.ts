@@ -13,3 +13,22 @@ export const getLocationName = (locations: IServiceLocation[]) =>
 export const removeQuotesRegex = new RegExp(/^["']|["']$|["]/, 'g');
 
 export const capitalise = (string: string) => string.charAt(0).toUpperCase() + string.slice(1);
+
+export const titleCase = (fieldName: string = ''): string => {
+  if (!fieldName) return '';
+
+  // safely ignore as fieldName will default to empty string if not provided
+  // @ts-ignore
+  return fieldName
+    .toLowerCase()
+    .split('.')
+    .pop()
+    .split('-')
+    .map(val =>
+      val
+        .split(' ')
+        .map(word => word && word.replace(word[0], word[0].toUpperCase()))
+        .join(' ')
+    )
+    .join(' ');
+};
