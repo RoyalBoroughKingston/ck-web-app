@@ -2,21 +2,33 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Button from '../../../components/Button';
+import ButtonLink from '../../../components/Button/ButtonLink';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { observer } from 'mobx-react';
 
 interface IProps extends RouteComponentProps {
   id: string;
+  referral_method: 'internal' | 'external' | 'none';
+  referral_url: string | null;
 }
 
-const ReferralCard: React.FunctionComponent<IProps> = ({ history, id }) => (
+const ReferralCard: React.FunctionComponent<IProps> = ({
+  history,
+  id,
+  referral_method,
+  referral_url,
+}) => (
   <div className="flex-container flex-container--align-center flex-container--justify flex-container--mobile-no-padding service__referral">
     <div className="flex-col flex-col--tablet--6 flex-col--mobile--12 flex-col--mobile-small--12">
-      <Button
-        text="Make a connection"
-        icon="arrow-right"
-        onClick={() => history.push(`/referral?service=${id}`)}
-      />
+      {referral_method === 'external' && referral_url ? (
+        <ButtonLink text="Make a connection" icon="arrow-right" href={referral_url} />
+      ) : (
+        <Button
+          text="Make a connection"
+          icon="arrow-right"
+          onClick={() => history.push(`/referral?service=${id}`)}
+        />
+      )}
     </div>
     <div className="flex-col flex-col--tablet--12">
       <div className="flex-container flex-container--justify flex-container--mobile-no-padding service__refer-disclaimer">
