@@ -1,0 +1,267 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create the core infrastructure needed to run the Sutton Information Hub Frontend
+
+Outputs:
+  BucketName:
+    Description: The S3 bucket name
+    Value:
+      Ref: Bucket
+
+  CloudFrontDomain:
+    Description: The domain name of the CloudFront distribution
+    Value:
+      Fn::GetAtt:
+        - Distribution
+        - DomainName
+
+  WwwCloudFrontDomain:
+    Description: The domain name of the CloudFront distribution for the www
+      subdomain
+    Value:
+      Fn::GetAtt:
+        - WwwDistribution
+        - DomainName
+
+  CloudFrontId:
+    Description: The ID of the CloudFront distribution
+    Value:
+      Ref: Distribution
+
+Parameters:
+  CertificateArn:
+    Description: The ARN for the CloudFront distribution SSL certificate (must
+      be in us-east-1).
+    Type: String
+
+  LambdaSeoMetaFunctionArn:
+    Description: The ARN for the Lambda customise meta tags function (must be in us-east-1 and include the version number).
+    Type: String
+
+  LambdaRedirectFunctionArn:
+    Description: The ARN for the Lambda redirect function (must be in us-east-1 and include the version number).
+    Type: String
+
+  Cname:
+    AllowedPattern: "^(?!:\\/\\/)([a-zA-Z0-9-_]+\\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\\.[a-zA-Z]{2,11}?$"
+    ConstraintDescription: Must be a valid domain
+    Description: The CNAME for the site.
+    MinLength: '1'
+    Type: String
+
+  Environment:
+    Description: The environment this stack is for (e.g. production or staging).
+    MinLength: '1'
+    Type: String
+
+  Uuid:
+    Default: 13247d04-8f6c-41c6-b991-3dc61d2f674b
+    Description: The unique ID for this stack.
+    MaxLength: '36'
+    MinLength: '36'
+    Type: String
+
+Resources:
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Ref: Cname
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerPreferred
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      WebsiteConfiguration:
+        IndexDocument: index.html
+
+  WwwBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Fn::Join:
+          - '.'
+          - - www
+            - Ref: Cname
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerPreferred
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      WebsiteConfiguration:
+        RedirectAllRequestsTo:
+          HostName:
+            Ref: Cname
+
+  CiUser:
+    Type: AWS::IAM::User
+    Properties:
+      Policies:
+        - PolicyDocument:
+            Statement:
+              - Action: s3:*
+                Effect: Allow
+                Resource: '*'
+              - Action: secretsmanager:GetSecretValue
+                Effect: Allow
+                Resource: '*'
+              - Action: cloudfront:CreateInvalidation
+                Effect: Allow
+                Resource: '*'
+            Version: '2012-10-17'
+          PolicyName: CiUserPolicy
+      UserName:
+        Fn::Join:
+          - '-'
+          - - ci-frontend
+            - Ref: Environment
+
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    DependsOn: Bucket
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - Ref: Cname
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: '/index.html'
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - HEAD
+            - GET
+          CachedMethods:
+            - HEAD
+            - GET
+          CachePolicyId:
+            Ref: CachePolicy
+          TargetOriginId:
+            Fn::Join:
+              - '-'
+              - - S3
+                - Ref: Bucket
+          LambdaFunctionAssociations:
+            - EventType: viewer-request
+              LambdaFunctionARN:
+                Ref: LambdaRedirectFunctionArn
+            - EventType: origin-request
+              LambdaFunctionARN:
+                Ref: LambdaSeoMetaFunctionArn
+          ViewerProtocolPolicy: redirect-to-https
+        DefaultRootObject: index.html
+        Enabled: True
+        IPV6Enabled: True
+        HttpVersion: http2
+        Origins:
+          - DomainName:
+              Fn::Sub: ${Cname}.s3-website.${AWS::Region}.amazonaws.com
+            Id:
+              Fn::Join:
+                - '-'
+                - - S3
+                  - Ref: Bucket
+            CustomOriginConfig:
+              OriginProtocolPolicy: http-only
+            OriginCustomHeaders:
+              - HeaderName: 'X-Env-Cname'
+                HeaderValue:
+                  Fn::Sub: ${Cname}
+        ViewerCertificate:
+          AcmCertificateArn:
+            Ref: CertificateArn
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2019
+
+  WwwDistribution:
+    Type: AWS::CloudFront::Distribution
+    DependsOn: WwwBucket
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - Fn::Join:
+              - '.'
+              - - www
+                - Ref: Cname
+        DefaultCacheBehavior:
+          ForwardedValues:
+            QueryString: False
+          TargetOriginId:
+            Fn::Join:
+              - '-'
+              - - S3
+                - Ref: WwwBucket
+          ViewerProtocolPolicy: redirect-to-https
+        Enabled: True
+        IPV6Enabled: True
+        HttpVersion: http2
+        Origins:
+          - DomainName:
+              Fn::Sub: www.${Cname}.s3-website.${AWS::Region}.amazonaws.com
+            Id:
+              Fn::Join:
+                - '-'
+                - - S3
+                  - Ref: WwwBucket
+            CustomOriginConfig:
+              OriginProtocolPolicy: http-only
+        ViewerCertificate:
+          AcmCertificateArn:
+            Ref: CertificateArn
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2019
+
+  CachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name:
+          Fn::Join:
+            - '-'
+            - - Ref: Environment
+              - cache
+              - policy
+        DefaultTTL: 86400
+        MaxTTL: 31536000
+        MinTTL: 60
+        ParametersInCacheKeyAndForwardedToOrigin:
+          CookiesConfig:
+            CookieBehavior: none
+          EnableAcceptEncodingBrotli: false
+          EnableAcceptEncodingGzip: false
+          HeadersConfig:
+            HeaderBehavior: whitelist
+            Headers:
+              - x-forwarded-for
+              - user-agent
+              - accept-encoding
+              - pragma
+              - host
+              - X-Env-Cname
+          QueryStringsConfig:
+            QueryStringBehavior: whitelist
+            QueryStrings:
+              - category
+              - persona
+
+  PublicBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref Bucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject'
+            Effect: Allow
+            Resource: !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref Bucket
+                - /*
+            Principal: '*'
+        Version: 2012-10-17
