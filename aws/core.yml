@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create the core infrastructure needed to run the Sutton Information Hub Frontend
+Description: Create the core infrastructure needed to run the Connected Kingston Frontend
 
 Outputs:
   BucketName:

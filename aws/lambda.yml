@@ -51,16 +51,16 @@ Resources:
             return {
               "referral": [
                 { name: '__PAGE_TITLE__', content: 'Referral | Connected Places' },
-                { name: '__PAGE_META_DESCRIPTION__', content:  'Connected Places is a site dedicated to helping people find activities, join clubs, and navigate local services in Hounslow' },
-                { name: '__PAGE_META_OG_DESCRIPTION__', content: 'Connected Places is a site dedicated to helping people find activities, join clubs, and navigate local services in Hounslow' },
+                { name: '__PAGE_META_DESCRIPTION__', content:  'Connected Places is a site dedicated to helping people find activities, join clubs, and navigate local services in Kingston' },
+                { name: '__PAGE_META_OG_DESCRIPTION__', content: 'Connected Places is a site dedicated to helping people find activities, join clubs, and navigate local services in Kingston' },
                 { name: '__PAGE_META_OG_TITLE__', content: 'Referral | Connected Places' },
                 { name: '__PAGE_META_OG_URL__', content: `${envUris.frontendBaseUrl}${envUris.originalUrl}` },
                 { name: '__PAGE_META_OG_IMAGE__', content: `${envUris.logoUrl}` }
               ],
               "duty-to-refer": [
                 { name: '__PAGE_TITLE__', content: 'Duty to refer | Connected Places' },
-                { name: '__PAGE_META_DESCRIPTION__', content:  'Connected Places is a site dedicated to helping people find activities, join clubs, and navigate local services in Hounslow' },
-                { name: '__PAGE_META_OG_DESCRIPTION__', content: 'Connected Places is a site dedicated to helping people find activities, join clubs, and navigate local services in Hounslow' },
+                { name: '__PAGE_META_DESCRIPTION__', content:  'Connected Places is a site dedicated to helping people find activities, join clubs, and navigate local services in Kingston' },
+                { name: '__PAGE_META_OG_DESCRIPTION__', content: 'Connected Places is a site dedicated to helping people find activities, join clubs, and navigate local services in Kingston' },
                 { name: '__PAGE_META_OG_TITLE__', content: 'Duty to refer | Connected Places' },
                 { name: '__PAGE_META_OG_URL__', content: `${envUris.frontendBaseUrl}${envUris.originalPath}` },
                 { name: '__PAGE_META_OG_IMAGE__', content: `${envUris.logoUrl}` }
@@ -407,7 +407,7 @@ Resources:
 
             const metaDesc = prepareDescription(rawPageContent);
 
-            const metaTitle = _get(data, 'name', defaultTitle).concat(' in Hounslow');
+            const metaTitle = _get(data, 'name', defaultTitle).concat(' in Kingston');
 
             let metas = [];
 
