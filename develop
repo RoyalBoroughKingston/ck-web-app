@@ -1,18 +1,39 @@
 #!/usr/bin/env bash
 
-# Set script scope environment variables for dev or CI.
-export CFN_TEMPLATE=${CFN_TEMPLATE:-cloudformation}
+# Set the docker command to use.
+DOCKER="docker"
+
+# Disable pseudo-TTY allocation for CI. The -T flag removes interaction.
+TTY="-it"
+
+# Travis CI provides a CI environment variable which can be used to check if
+# this is running in a CI environment.
+if [[ ${CI:-false} == "true" ]]; then
+    TTY="-T"
+fi
 
 # Pass arguments to docker-compose, or default to docker-compose ps.
 if [[ $# -gt 0  ]]; then
     case "$1" in
 
-        cfn|cloudformation )
-            docker-compose run --rm troposphere > aws/${CFN_TEMPLATE}.json
-            cat aws/${CFN_TEMPLATE}.json
+        deploy )
+            shift 1
+            ${DOCKER} run --rm ${TTY} \
+                -v `pwd`:/var/www/html \
+                -w /var/www/html \
+                -e ENVIRONMENT=${ENVIRONMENT:-'staging'} \
+                -e CI=${CI:-false} \
+                node:14 \
+                bash .travis/deploy.sh
             ;;
 
-        * ) docker-compose "$@"; ;;
+        * )
+            shift 1
+            ${DOCKER} run --rm ${TTY} \
+                -v `pwd`:/var/www/html \
+                -w /var/www/html \
+                ubuntu:latest \
+                "$@"
 
     esac
 else
