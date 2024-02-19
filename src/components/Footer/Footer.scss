@@ -33,6 +33,16 @@
     }
   }
 
+  &--legal-links {
+    display: flex;
+    margin: 0 -0.5rem;
+    list-style: none;
+
+    & > li {
+      padding: 0 0.5rem;
+    }
+  }
+
   &:before {
     content: '';
     background-image: url('../../assets/images/backgrounds/footer-shape.svg');

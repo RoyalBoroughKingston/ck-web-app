@@ -36,9 +36,18 @@ const Footer: React.FunctionComponent<IProps> = ({ mobileMenu, cmsStore, uiStore
             children={get(cmsStore, 'global.footer_content', '')}
           />
 
-          <Link to="/privacy-policy" className="body--xs">
-            Privacy Policy
-          </Link>
+          <ul className="footer--legal-links">
+            <li>
+              <Link to="/privacy-policy" className="body--xs">
+                Privacy policy
+              </Link>
+            </li>
+            <li>
+              <Link to="/accessibility-statement" className="body--xs">
+                Accessibility statement
+              </Link>
+            </li>
+          </ul>
         </div>
         <div className="flex-col flex-col--6 flex-col--tablet--12 footer__section">
           <div className="flex-container flex-container--no-padding">
