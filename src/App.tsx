@@ -16,6 +16,7 @@ import About from './views/About';
 import Contact from './views/Contact';
 import GetInvolved from './views/GetInvolved';
 import Privacy from './views/Privacy';
+import AccessibilityStatement from './views/AccessibilityStatement';
 import DutyToRefer from './views/DutyToRefer';
 import Collection from './views/Collection';
 import Persona from './views/Persona';
@@ -84,6 +85,7 @@ class App extends Component {
               <Route path="/contact" component={Contact} />
               <Route path="/get-involved" component={GetInvolved} />
               <Route path="/privacy-policy" component={Privacy} />
+              <Route path="/accessibility-statement" component={AccessibilityStatement} />
               <Route path="/terms-and-conditions" component={Terms} />
               <Route path="/duty-to-refer" component={DutyToRefer} />
               <Route component={NotFound} />
